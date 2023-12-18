@@ -1,0 +1,340 @@
+
+package lab5tree;
+
+public class Node <T extends Comparable<T>> {
+	private T value;
+    private Node<T> left;
+    private Node<T> right;
+
+	public T getValue() {
+		return this.value;
+	}
+
+	public void setValue(final T value) {
+		this.value = value;
+	}
+
+	public Node<T> getLeft() {
+		return this.left;
+	}
+
+	public void setLeft(final Node<T> left) {
+		this.left = left;
+	}
+
+	public Node<T> getRight() {
+		return this.right;
+	}
+
+	public void setRight(final Node<T> right) {
+		this.right = right;
+	}
+    
+	@Override
+	   public String toString() {
+	       return "Node{" +
+	               "value=" + value +
+	               ", leftChild=" + left +
+	               ", rightChild=" + right +
+	               '}';
+	   }
+}
+
+package lab5tree;
+
+import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Main {
+	public static void main(String[] args) {
+		
+		////////--------------------------------ЗАВДАННЯ1-------------------------------------------------
+		
+		System.out.println("\n\nЗАВДАННЯ1\n\n");
+		
+        BinaryTree<Integer> tree = new BinaryTree<>();
+        System.out.println("Введіть к-сть елементів: ");
+        Scanner s = new Scanner(System.in);
+        int q = s.nextInt();
+        System.out.println("Введіть елементи: ");
+        for (int i = 0; i < q; i++) {
+        	int val = s.nextInt();
+			tree.insertNode(val);
+		}
+
+        System.out.println("Дерево у вигляді дерева:");
+        tree.printTree();
+        
+        System.out.println(tree.findNodeByValue(15));
+        System.out.println("Максимальний елемент в дереві: " + tree.findMaxValue().getValue());
+        //tree.deleteNode(12);
+        //tree.printTree();
+        
+        /////////------------------------------------ЗАВДАННЯ2----------------------------------------
+
+		System.out.println("\n\nЗАВДАННЯ2\n\n");
+		
+        BinaryTree<Character> tree2 = new BinaryTree<>();
+        Map<Character, Integer> charCountMap = new HashMap<>();
+        System.out.println("Введіть рядок: ");
+        Scanner s2 = new Scanner(System.in);
+        String input = s2.nextLine();
+        char[] characters = input.toCharArray();
+        for (char ch : characters) {
+        	charCountMap.put(ch, charCountMap.getOrDefault(ch, 0) + 1);
+            tree2.insertNode(ch);;
+        }
+        System.out.println("Дерево у вигляді дерева:");
+        tree2.printTree();
+        System.out.println("Повторювані символи у слові:");
+        for (Map.Entry<Character, Integer> entry : charCountMap.entrySet()) {
+            if (entry.getValue() > 1) {
+                System.out.println(entry.getKey() + ": " + entry.getValue() + " раз(ів)");
+            }
+        }
+        
+        //////////---------------------------------ЗАВДАННЯ3------------------------------------------
+
+		System.out.println("\n\nЗАВДАННЯ3\n\n");
+		
+        BinaryTree<String> tree3 = new BinaryTree<>();
+        try(BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\Admin\\Desktop\\tree_f.txt"))){ 
+        String line;
+        while ((line = br.readLine()) != null) {
+        	String[] words = line.split("\\s+");
+            for (String word : words) {
+            	tree3.insertNode(word);
+                }
+            }
+        }
+        catch(IOException e) {
+            e.printStackTrace();}
+        tree3.printTree();
+        
+        System.out.println("Введіть потрібну літеру");
+        char letter = s.next().charAt(0);
+        System.out.println("введена літера: " + letter);
+        System.out.println(tree3.countWordsStartingWith(letter));
+        tree3.printTree();
+    }
+}
+
+package lab5tree;
+import java.util.Stack;
+
+public class BinaryTree <T extends Comparable<T>> {
+	private Node<T> root;
+
+    public Node<T> getRoot() {
+		return root;
+	}
+
+	public BinaryTree() {
+        root = null;
+    }
+
+    // Додавання вузла до дерева
+    public void insertNode(T value) { // метод вставки нового елемента
+        Node<T> newNode = new Node<T>(); // створення нового вузла
+        newNode.setValue(value); // вставка даних
+        if (root == null) { // якщо рут не існує
+            root = newNode;// то новий і є рут
+        }
+        else { // рут зайнятий
+            Node<T> currentNode = root; // починаємо з рут 
+            Node<T> parentNode;
+            while (true) // 
+            {
+                parentNode = currentNode;
+                if(value.compareTo(currentNode.getValue()) == 0) {   
+                     return;   
+                 }
+                 else  if (value.compareTo(currentNode.getValue()) < 0) {   // рух вліво?
+                    currentNode = currentNode.getLeft();
+                    if (currentNode == null){ // якщо кінець ланцюга,
+                        parentNode.setLeft(newNode); //  то вставити зліва і вийти
+                        return;
+                    }
+                }
+                else { // або вправо?
+                    currentNode = currentNode.getRight();
+                    if (currentNode == null) { // якщо кінець ланцюга,
+                        parentNode.setRight(newNode);  //то вставити зправа
+                        return; // і вийти
+                    }
+                }
+            }
+        }
+    }
+
+    // Виведення дерева на екран у вигляді дерева
+    public void printTree() { // метод для вывода дерева в консоль
+        Stack<Node<T>> globalStack = new Stack<>(); // загальний стек для значень дерева
+        globalStack.push(root);
+        int gaps = 32; // початкове знач відстані між елементами
+        boolean isRowEmpty = false;
+        String separator = "-----------------------------------------------------------------";
+        System.out.println(separator);
+        while (isRowEmpty == false) {
+            Stack<Node<T>> localStack = new Stack<>(); // локальний стек для наслідників елемента
+            isRowEmpty = true;
+
+            for (int j = 0; j < gaps; j++)
+                System.out.print(' ');
+            while (globalStack.isEmpty() == false) { // 
+                Node<T> temp = (Node<T>) globalStack.pop(); 
+                if (temp != null) {
+                    System.out.print(temp.getValue()); 
+                    localStack.push(temp.getLeft()); 
+                    localStack.push(temp.getRight());
+                    if (temp.getLeft() != null ||
+                            temp.getRight() != null)
+                        isRowEmpty = false;
+                }
+                else {
+                    System.out.print("__");// - якщо попрожній
+                    localStack.push(null);
+                    localStack.push(null);
+                }
+                for (int j = 0; j < gaps * 2 - 2; j++)
+                    System.out.print(' ');
+            }
+            System.out.println();
+            gaps /= 2;// відстань зменшується
+            while (localStack.isEmpty() == false)
+                globalStack.push(localStack.pop()); // з локального стека в глобальний
+        }
+        System.out.println(separator);// 
+    }
+
+    // Пошук заданого числа в дереві
+    public Node<T> findNodeByValue(T value) { // 
+        Node<T> currentNode = root; // починаємо з рута
+        while (currentNode.getValue() != value) { // 
+            if (value.compareTo(currentNode.getValue()) < 0) { // вліво?
+                currentNode = currentNode.getLeft();
+            } else { //вправо
+                currentNode = currentNode.getRight();
+            }
+            if (currentNode == null) { // якщо нема наслідника,
+                return null; //  null
+            }
+        }
+        return currentNode; 
+    }
+    
+    // Знаходження максимального елемента в дереві
+    public Node<T> findMaxValue() {
+    	Node<T> currentNode = root;
+    	while (currentNode.getRight() != null) {
+    		currentNode = currentNode.getRight();
+    	}
+    	return currentNode;
+    }
+    
+    //Видалення вказаного елемента з дерева
+    public boolean deleteNode(T value) 
+    {
+        Node<T> currentNode = root;
+        Node<T> parentNode = root;
+        boolean isLeftChild = true;
+        while (currentNode.getValue().compareTo(value) != 0) { 
+            parentNode = currentNode;
+            if (value.compareTo(currentNode.getValue()) < 0 ) { // вліво?
+                isLeftChild = true;
+                currentNode = currentNode.getLeft();
+            }
+            else { //  вправо?
+                isLeftChild = false;
+                currentNode = currentNode.getRight();
+            }
+            if (currentNode == null)
+                return false; // не знайдено
+        }
+
+        if (currentNode.getLeft() == null && currentNode.getRight() == null) { 
+            if (currentNode == root) // якщо рут, то дерево очищується
+                root = null;
+            else if (isLeftChild)
+                parentNode.setLeft(null); 
+            else
+                parentNode.setRight(null);
+        }
+        else if (currentNode.getRight() == null) { 
+            if (currentNode == root)
+                root = currentNode.getLeft();
+            else if (isLeftChild)
+                parentNode.setLeft(currentNode.getLeft());
+            else
+                parentNode.setRight(currentNode.getLeft());
+        }
+        else if (currentNode.getLeft() == null) { 
+            if (currentNode == root)
+                root = currentNode.getRight();
+            else if (isLeftChild)
+                parentNode.setLeft(currentNode.getRight());
+            else
+                parentNode.setRight(currentNode.getRight());
+        }
+        else { 
+            Node<T> heir = receiveHeir(currentNode);
+            if (currentNode == root)
+                root = heir;
+            else if (isLeftChild)
+                parentNode.setLeft(heir);
+            else
+                parentNode.setRight(heir);
+            heir.setLeft(currentNode.getLeft());
+        }
+        return true; 
+    }
+
+   
+    private Node<T> receiveHeir(Node<T> node) {
+        Node<T> parentNode = node;
+        Node<T> heirNode = node;
+        Node<T> currentNode = node.getRight(); // вправо
+        while (currentNode != null) // поки є ліві
+        {
+            parentNode = heirNode;
+            heirNode = currentNode;
+            currentNode = currentNode.getLeft(); // вліво
+        }
+        
+        if (heirNode != node.getRight()) 
+        { 
+            parentNode.setLeft(heirNode.getRight());
+            heirNode.setRight(node.getRight());
+        }
+        return heirNode;
+    }
+    
+    //Пошук елемента, що починається на вказану букву
+    
+    public int countWordsStartingWith(char letter) {
+        return findNodeByLetter((Node<String>) root, letter);
+    }
+    
+    public int findNodeByLetter(Node<String> currentNode, char letter) { // 
+    	if (currentNode == null) { 
+        	return 0; 
+        }
+    	int k=0;
+        char[] els = currentNode.getValue().toCharArray();
+        
+        if (els[0] == letter) {// Знайдено слово, яке починається з шуканої букви
+        	deleteNode((T) currentNode.getValue());
+            k++;
+        }
+        
+        if (els[0]>letter) { // вліво?
+        	k+= findNodeByLetter(currentNode.getLeft(), letter);
+        } 
+        k+= findNodeByLetter(currentNode.getRight(), letter);
+        
+        return k;
+    }
+    
+}
