@@ -1,0 +1,111 @@
+package lab3algs;
+import java.util.Scanner;
+import java.util.Stack;
+
+public class MyFirstStack {
+	public static void main(String[] args) {
+		
+		System.out.println("Введіть кількість елементів стеку: ");
+		Scanner scanner = new Scanner(System.in);
+		int quantity = scanner.nextInt();//встановлюємо к-сть елементів стеку
+		Stack<Integer> theStack = new Stack<>();//створюємо стек
+		Stack<Integer> theNewStack = new Stack<>();
+		Stack<Integer> theEvenStack = new Stack<>();
+		Stack<Integer> theOddStack = new Stack<>();
+		for(int i=0; i<quantity; i++) {
+			System.out.println("Введіть " + (i+1) + "-ий елемент стеку: ");
+			theStack.push(scanner.nextInt());//додаємо елементи до стеку
+		}
+//ВИКОНАННЯ ЗАВДАННЯ 1
+		System.out.print("Наш стек: ");//виводимо наш стек в консоль
+		while (!theStack.isEmpty()) {
+			int value = theStack.pop();
+			theNewStack.push(value);
+			System.out.print(value);
+			System.out.print(" ");
+		}
+			System.out.println("");
+			
+		///ВИКОНАННЯ ЗАВДАННЯ 2
+			System.out.println(theNewStack.peek());
+			while (!theNewStack.isEmpty()) {
+				int value = theNewStack.pop();
+				if(value%2==0) {
+				theEvenStack.push(value);}
+				else {
+					theOddStack.push(value);}
+				}	
+			System.out.println("Стек парних чисел:");
+	        while (!theEvenStack.isEmpty()) {
+	            System.out.println(theEvenStack.pop());
+	        }
+	        System.out.println("Стек непарних чисел:");
+	        while (!theOddStack.isEmpty()) {
+	            System.out.println(theOddStack.pop());
+	        }
+	        
+	   ///ВИКОНАННЯ ЗАВДАННЯ 3
+	        System.out.println("Введіть потрібний для перевірки рядок з дужками: ");
+	        Scanner scanner2 = new Scanner(System.in);
+	        String vvid = scanner2.nextLine();
+	        StackForBrakes check = new StackForBrakes(vvid);
+			check.makeCheck();
+	       
+	}
+}
+
+package lab3algs;
+
+import java.util.Stack;
+
+public class StackForBrakes{
+	
+	private String input;
+	private int lengthInput;
+	Stack<Character> theBrakesStack;
+	
+	public StackForBrakes(String input) {
+		this.input = input;
+		this.lengthInput = input.length();
+		theBrakesStack = new Stack<>();
+	}
+	
+	public void makeCheck() {
+		
+		for (int i = 0; i < lengthInput; i++) { 	// початок послідовного зчитування
+			char ch = input.charAt(i); 				// зчитування символу
+
+			switch (ch) {
+
+			case '{':
+			case '[':
+			case '(':
+				theBrakesStack.push(ch);
+				break;
+
+			case '}':
+			case ']':
+			case ')':
+
+				if (!theBrakesStack.isEmpty()) { 								//якщо стек не порожній
+					char chClosed = theBrakesStack.pop();				//вилучити та перевірити
+
+					if ((ch == '}' && chClosed != '{')
+							|| (ch == ']' && chClosed != '[')
+							|| (ch == ')' && chClosed != '('))
+						System.out.println("Помилка, дужка " + ch + " в " + i + " позиції.");
+				} else 													//завчасний брак елементів у стеку
+					System.out.println("Помилка, дужка " + ch + " в " + i + " позиції.");
+				break;
+
+			default: 
+				break;
+			}
+		}
+
+		if (!theBrakesStack.isEmpty()) {
+			System.out.println("Помилка! Загублена закриваюча дужка");
+		}
+		
+	}
+}
