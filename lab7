@@ -1,0 +1,55 @@
+package lab7search;
+
+import java.util.Random;
+import java.util.Scanner;
+
+public class Search {
+
+	public static void findLastPositiveElement(int[][] array) {
+		int findElement = 0;
+		int iNumber = -1;
+		int jNumber = -1;
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array.length; j++) {
+				if (array[i][j]>0) {
+					findElement = array[i][j];
+					iNumber = i;
+					jNumber = j;
+				}
+			}
+		}
+		if (array.length == 0) {
+			System.out.println("Масив порожній!");
+		}
+		else if (findElement == 0) {
+			System.out.println("Немає додатніх елементів");
+		} else {
+			System.out.println("Останній додатній елемент = " + findElement + ";\nНомер рядка = " + iNumber + ";\nНомер стовпця = " + jNumber );
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		int n, r;
+		
+		System.out.println("Введіть розмірність квадратної матриці (одне число, що відповідає к-сті рядків і стовпців: )");
+		Scanner s =  new Scanner(System.in);
+		n = s.nextInt();
+		
+		int[][] myArr = new int[n][n];
+		Random random = new Random();
+		
+		System.out.println("Введіть радіус можливих випадкових чисел: ");
+		r = s.nextInt(); 
+		for (int i = 0; i < myArr.length; i++) {
+			for (int j = 0; j < myArr.length; j++) {
+				myArr[i][j] = random.nextInt(2*r+1) - r;
+				System.out.print(myArr[i][j] + "  ");
+			}
+			System.out.println("\n");
+		}
+		findLastPositiveElement(myArr);
+
+	}
+
