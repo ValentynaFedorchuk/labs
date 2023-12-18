@@ -1,0 +1,150 @@
+ТЕКСТ ПРОГРАМИ:
+package lab4queue;
+
+import java.util.Scanner;
+
+public class Main {
+
+	public static void main(String[] args) {
+		
+		MyQueue q = new MyQueue();
+		int number;
+		
+		System.out.println("Виберіть завдання, виконання якого хочете побачити:\n"
+				+ "1 - Створити чергу з 5 елементів\n"
+				+ "2 - Додати елемент в кінець черги\n"
+				+ "3 - Додати елемент на початок черги\n"
+				+ "4 - Видалити елемент з початку черги\n"
+				+ "5 - Видалити елемент з кінця черги\n"
+				+ "6 - Перевірити, чи є введений рядок паліндромом\n"
+				+ "7 - Завершити роботу");
+		
+		Scanner n = new Scanner(System.in);
+		do{
+			number = n.nextInt();
+		
+			switch (number) {
+		
+		case 1:
+			q.createQueue(5);
+			q.printQueue();
+			break;
+			
+		case 2:
+			q.addToEndQueue();		
+			q.printQueue();
+			break;
+			
+		case 3:
+			q.addToTopQueue();		
+			q.printQueue();
+			break;
+			
+		case 4:
+			q.deleteTopQueue();		
+			q.printQueue();
+			break;
+			
+		case 5:
+			q.deleteEndQueue();		
+			q.printQueue();
+			break;
+			
+		case 6:
+			q.checkIfPalindrome();		
+			break;
+			
+		case 7:
+			System.out.println("Роботу завершено!");		
+			break;
+
+		default:
+			break;
+		}
+		}
+		while(number!=7);
+	}
+
+}
+
+package lab4queue;
+
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class MyQueue {
+	private LinkedList<Integer> queue = new LinkedList<>();
+
+	public void createQueue(int quantity){//створення черги
+		System.out.println("Введіть елементи черги");
+		Scanner s = new Scanner(System.in);
+		for (int i = 0; i < quantity; i++) {
+			queue.add(s.nextInt());
+		}
+	}
+	
+	public void printQueue(){//виведення черги
+		if (!queue.isEmpty()) {
+			for (Integer element : queue) {
+				System.out.print(element + " ");
+			}
+		}
+		else {
+			System.out.println("Черга порожня!");
+		}
+    }
+	
+	public void addToEndQueue(){//додати в кінець
+		Scanner s = new Scanner(System.in);
+		System.out.println("\nВведіть елемент: ");
+		queue.addLast(s.nextInt());
+    }
+	
+	public void addToTopQueue(){//додати на початок
+		Scanner s = new Scanner(System.in);
+		System.out.println("\nВведіть елемент: ");
+		queue.addFirst(s.nextInt());
+    }
+	
+	public void deleteEndQueue(){
+		if (!queue.isEmpty()) {
+			queue.pollLast();
+		}
+		else {
+			System.out.println("Черга порожня!");
+		}
+    }
+	
+	public void deleteTopQueue(){
+		if (!queue.isEmpty()) {
+		queue.pollFirst();
+		}
+		else {
+			System.out.println("Черга порожня!");
+		}
+    }
+	
+	// Метод для перевірки, чи рядок є паліндромом
+    public static boolean isPalindrome(String str) {
+        // Видалення пробілів і переведення до нижнього регістру
+        str = str.replaceAll("\\s", "").toLowerCase();
+
+        // Порівняння рядка з його реверсним варіантом
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
+    }
+
+    public void checkIfPalindrome() {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Введіть рядок для перевірки, чи він є паліндромом:");
+        String input = s.nextLine();
+
+        if (isPalindrome(input)) {
+            System.out.println("Рядок є паліндромом.");
+        } else {
+            System.out.println("Рядок не є паліндромом.");
+        }
+    }
+}
+
