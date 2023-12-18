@@ -1,0 +1,62 @@
+package lab8;
+
+import java.util.Arrays;
+
+public class Main {
+
+	public static void main(String[] args) {
+		int[] arr1 = ArraySorting.createArray();
+		System.out.println("Масив N: " + Arrays.toString(arr1));
+		int[] arr2 = ArraySorting.createArray();
+		System.out.println("Масив M: " + Arrays.toString(arr2));
+		System.out.println("Віддсортований масив N: " + Arrays.toString(ArraySorting.sortArray(arr1)));
+		//System.out.println(arr1[2]);
+		
+		for (int element : arr2) {
+            int index = Arrays.binarySearch(arr1, element);
+            if (index >= 0) {
+                System.out.println("Елемент " + element + " є в масиві N на позиції " + index);
+            } else {
+                System.out.println("Елемент " + element + " не знайдений в масиві N");
+            }
+        }
+	}
+
+}
+
+package lab8;
+
+import java.util.Scanner;
+
+public class ArraySorting {
+	
+	
+	public static int[] createArray() {
+	    int quantity;
+		System.out.println("Введіть к-сть елементів в масиві");
+		Scanner s = new Scanner(System.in);
+		quantity = s.nextInt();
+		int[] myArray = new int[quantity];
+		System.out.println("Введіть елементи масиву:");
+		for (int i = 0; i < quantity; i++) {
+			myArray[i] = s.nextInt();
+		}
+		return myArray;
+	}
+	
+	public static int[] sortArray(int array[]) {
+		int n = array.length;
+		int temp;
+
+	    for (int i = 1; i < n; i++) {
+	        for (int j = i; j > 0 && array[j] < array[j - 1]; j--) {// swaping.
+
+	            temp = array[j];
+	            array[j] = array[j - 1];
+	            array[j - 1] = temp;
+	        }
+	    }
+	    return array;
+	}
+
+}
