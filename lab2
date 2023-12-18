@@ -1,0 +1,89 @@
+//task1
+import java.util.LinkedList;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        LinkedList<Integer> linkedList = new LinkedList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Введіть цілі числа (для завершення введення введіть 0):");
+        while (true) {
+            int number = scanner.nextInt();
+            if (number == 0) {
+                break; // Завершую введення, якщо введено 0.
+            }
+            linkedList.add(number); // Додаю число до зв'язаного списку.
+        }
+        System.out.println("Список цілих чисел:"); //Виводжу список чисел в консоль
+        for (Integer num : linkedList) {
+            System.out.print(num +" ");
+        }
+        scanner.close();
+    }
+}
+//task2
+import java.util.LinkedList;
+import java.util.Scanner;
+public class Main {
+    public static void main(String[] args) {
+        LinkedList<Character> charList = new LinkedList<>();
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Введіть рядок: ");
+        String inputString = scanner.nextLine();
+        for (char c : inputString.toCharArray()) {
+            charList.add(c); // Додаємо кожен символ рядка до списку.
+        }
+        System.out.println("Список символів:");
+        for (Character character : charList) {
+            System.out.println(character);
+        }
+        scanner.close();
+  }
+}
+
+//task3
+import java.util.LinkedList;
+import java.util.Scanner;
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedList<LinkedList<String>> atomList = new LinkedList<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.print("Введіть рядок: ");
+        String inputString = scanner.nextLine();
+
+        for (int i = 0; i < inputString.length(); i++) {
+            LinkedList<String> atom = new LinkedList<>();
+            atomList.add(atom); // Додаємо порожній список (атом) до списку атомів.
+        }
+
+        System.out.println("Список атомів (порожніх списків):");
+        for (LinkedList<String> atom : atomList) {
+            System.out.println(atom);
+        }
+
+        scanner.close();
+    }
+}
+//parts of tasks 4-5
+package Family;
+import java.util.LinkedList;
+
+public class Family {
+	private Person husband;
+    private Person wife;
+    private LinkedList<Person> children;
+
+    public Family(Person husband, Person wife, LinkedList<Person> children) {
+        this.husband = husband;
+        this.wife = wife;
+        this.children = children;
+    }
+
+LinkedList<Person> children1 = new LinkedList<>();
+        children1.add(new Person("Олег", "Петренко", LocalDate.of(2010, 8, 15), job2));
+        children1.add(new Person("Анна", "Петренко", LocalDate.of(2015, 12, 25), job2));
+        children1.add(new Person("Аліна", "Петренко", LocalDate.of(2015, 12, 25), job2));
+
+        Family family1 = new Family(husband1, wife1, children1);
