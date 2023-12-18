@@ -1,0 +1,88 @@
+#include <stdlib.h>
+#include <iostream>
+#include <time.h>
+#include <math.h>
+#include <Windows.h>
+using namespace std;
+
+int _stateMainMenu;
+void MainMenu() {
+ system("cls");
+ cout << "Оберіть завдання, яке хочете побачити: " << endl
+ << "(0) Вихід із програми" << endl
+ << "(1) Завдання №1" << endl
+ << "(2) Завдання №2" << endl
+ << "Ваш вибір: ";
+ cin >> _stateMainMenu;
+ }
+int main()
+{   
+SetConsoleOutputCP(1251);
+	const int size = 90;
+	int A[size];
+	int k, sum, newSize, maxSize;
+	newSize = 0;
+	maxSize = 100;
+	int B[maxSize];
+	double average;
+	sum=0;
+	k=0; 
+	cout << "Лабораторна робота №1 студентки групи ІП-22-1!" << endl;
+    system("pause");
+    system("cls");
+    srand(time(NULL));
+    		 for(int i=0; i<size; i++){
+      			 A[i]=1*(85-(rand()%100)); ///---------------------------------рандомно заповнюємо масив елементами
+     			  if(A[i]%2==0){ //--------------------------------------------шукаємо парні елементи
+       			sum=sum+A[i];////----------------------------------------------знаходимо суму парних елементів
+       			k++;////-------------------------------------------------------знаходимо кількість парних елементів
+	   } ;
+    };
+    		average=sum/k;///--------------------------------------------------знаходимо середнє значення		
+      //////////////////----------------------------------------------------------------------------------------------------------------------
+	 	for(int i=0; i<size; i++){
+	 	B[newSize]=A[i];
+	 	newSize++;
+		if(A[i]<0){
+	   		B[newSize]=abs(A[i]); ///------------------------------------------виконується умова 2 завдання 
+	   		newSize++;
+	   }  }
+		///--------------------------------------------просто інтерфейс і виведення масивів---------------------------------------
+		MainMenu();
+		while (_stateMainMenu != 0){
+    	switch (_stateMainMenu) {
+			case 1:
+				cout << "Array Elements: ";
+				for(int i=0; i<size; i++){
+					cout<< A[i]<< " ";}
+				cout<< "\nAverage = " << average << "\n";
+				
+				system("pause");
+				system("cls");
+  				MainMenu();
+   				break;
+	
+			case 2:
+				cout << "Array Elements: ";
+				for(int i=0; i<size; i++){
+					cout<< A[i]<< " ";}
+				cout << "\nNew Array: "; 
+					if(newSize<=maxSize){
+						for(int i=0; i<newSize; i++){
+							cout << B[i] << " ";}}
+						else cout << "ERROR! too many elements in new array\n";
+				system("pause");
+				system("cls");
+  				MainMenu();
+   				break;
+   				
+   			default:
+ 				system("cls");
+ 				cout << "Пункт меню введено неправильно!" << endl;
+ 				system("pause");
+ 				MainMenu();}}
+ 
+ 				system("cls");
+ 				cout << "Роботу завершено!" << endl;
+ 				system("pause");
+	}
